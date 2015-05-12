@@ -12,7 +12,8 @@ angular.module('ui.utils.masks.global.number', [
 			link: function (scope, element, attrs, ctrl) {
 				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
-					decimals = $parse(attrs.uiNumberMask)(scope);
+					// decimals = $parse(attrs.uiNumberMask)(scope);
+					decimals = parseInt(attrs.uiNumberMask);
 
 				if (angular.isDefined(attrs.uiHideGroupSep)){
 					thousandsDelimiter = '';
@@ -31,6 +32,9 @@ angular.module('ui.utils.masks.global.number', [
 					}
 
 					var valueToFormat = PreFormatters.clearDelimitersAndLeadingZeros(value) || '0';
+					if(value.length > 1 && angular.isDefined(attrs.uiSufix) && value.indexOf(attrs.uiSufix) === -1) {
+						valueToFormat = valueToFormat.slice(0, valueToFormat.length - 1);
+					}
 					var formatedValue = viewMask.apply(valueToFormat);
 					var actualNumber = parseFloat(modelMask.apply(valueToFormat));
 
@@ -44,6 +48,10 @@ angular.module('ui.utils.masks.global.number', [
 							actualNumber *= -1;
 							formatedValue = '-' + formatedValue;
 						}
+					}
+
+					if(angular.isDefined(attrs.uiSufix)){
+						formatedValue = formatedValue + ' ' + attrs.uiSufix;
 					}
 
 					if (ctrl.$viewValue !== formatedValue) {
@@ -64,8 +72,13 @@ angular.module('ui.utils.masks.global.number', [
 						prefix = '-';
 					}
 
+					var sufix = '';
+					if(angular.isDefined(attrs.uiSufix)){
+						sufix = attrs.uiSufix;
+					}
+
 					var valueToFormat = PreFormatters.prepareNumberToFormatter(value, decimals);
-					return prefix + viewMask.apply(valueToFormat);
+					return prefix + viewMask.apply(valueToFormat) + ' ' + sufix;
 				}
 
 				ctrl.$formatters.push(formatter);

@@ -312,5 +312,32 @@ describe('ui.utils.masks.number', function() {
 			expect(input.getAttribute('value')).toEqual('123');
 			expect(value.getText()).toEqual('123');
 		});
+
+		it('should include the sufix', function() {
+			var input = element(by.model('numberWithSufix')),
+				value = element(by.binding('numberWithSufix'));
+
+			input.sendKeys('123');
+			expect(input.getAttribute('value')).toEqual('1,23 Kg');
+			expect(value.getText()).toEqual('1.23');
+		});
+
+		it('should not delete part of sufix when deleting', function() {
+			var input = element(by.model('numberWithSufix')),
+				value = element(by.binding('numberWithSufix'));
+
+			input.sendKeys('123');
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			expect(input.getAttribute('value')).toEqual('1,23 Kg');
+			expect(value.getText()).toEqual('1.23');
+		});
+
+		it('should not include the sufix when the input is empty', function() {
+			var input = element(by.model('numberWithSufix')),
+				value = element(by.binding('numberWithSufix'));
+
+			input.clear();g
+			expect(input.getAttribute('value')).toEqual('');
+		});
 	});
 });
