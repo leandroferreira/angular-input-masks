@@ -31,7 +31,7 @@ var header = ['/**',
 		''
 	].join('\n'),
 	bowerConfig = {
-		repository: 'git@github.com:assisrafael/bower-angular-input-masks.git',
+		repository: 'git@github.com:leandroferreira/bower-angular-input-masks.git',
 		path: './bower-angular-input-masks'
 	};
 
