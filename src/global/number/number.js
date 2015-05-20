@@ -32,8 +32,8 @@ angular.module('ui.utils.masks.global.number', [
 					}
 
 					var valueToFormat = PreFormatters.clearDelimitersAndLeadingZeros(value) || '0';
-					if(value.length > 1 && angular.isDefined(attrs.uiSufix) && value.indexOf(attrs.uiSufix) === -1) {
-						valueToFormat = valueToFormat.slice(0, valueToFormat.length - 1);
+					if(angular.isDefined(attrs.uiSufix) && value.length > attrs.uiSufix.length && value.indexOf(attrs.uiSufix) === -1) {
+						valueToFormat = valueToFormat.slice(0, valueToFormat.length - 1) || '0';
 					}
 					var formatedValue = viewMask.apply(valueToFormat);
 					var actualNumber = parseFloat(modelMask.apply(valueToFormat));
